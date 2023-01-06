@@ -1,0 +1,3 @@
+*.app
+Translations/*.g.xlf
+rad.json
