@@ -18,6 +18,9 @@ codeunit 50400 "ReleaseSalesDocumentSub"
     var
         Item: Record Item;
     begin
+        if SalesLine.ReservEntryExist() then
+            exit;
+
         Item := SalesLine.GetItem();
 
         case false of
