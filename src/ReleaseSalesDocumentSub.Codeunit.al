@@ -114,7 +114,7 @@ codeunit 50400 "ReleaseSalesDocumentSub"
         if SalesLine.IsEmpty then
             exit;
 
-        CreateReservation := ConfirmManagement.GetResponseOrDefault('Item Tracking will be created, do you want to reserve too?', false);
+        CreateReservation := ConfirmManagement.GetResponseOrDefault('Item Tracking will be created for Items with Exiration Date, do you want to reserve them too?', false);
         AssignItemTrackingToSalesLines(SalesLine, CreateReservation);
     end;
 
