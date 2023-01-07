@@ -56,13 +56,14 @@ codeunit 50400 "ReleaseSalesDocumentSub"
 
         RemainQtyToAssign := SalesLine."Outstanding Quantity";
         ItemLedgerEntry.SetCurrentKey("Expiration Date");
+        ItemLedgerEntry.SetAutoCalcFields("Reserved Quantity");
         ItemLedgerEntry.FindSet();
         repeat
             RemainQtyToAssign -= CreateReservationEntry(SalesLine, ItemLedgerEntry, RemainQtyToAssign, CreateReservation);
         until (ItemLedgerEntry.Next() = 0) or (RemainQtyToAssign = 0);
     end;
 
-    local procedure CreateReservationEntry(SalesLine: Record "Sales Line"; ItemLedgerEntry: Record "Item Ledger Entry"; RemainQtyToAssign: Decimal; CreateReservation: Boolean): Decimal
+    local procedure CreateReservationEntry(SalesLine: Record "Sales Line"; var ItemLedgerEntry: Record "Item Ledger Entry"; RemainQtyToAssign: Decimal; CreateReservation: Boolean): Decimal
     var
         TempReservationEntry: Record "Reservation Entry" temporary;
         TempTrackingSpecification: Record "Tracking Specification" temporary;
@@ -85,6 +86,7 @@ codeunit 50400 "ReleaseSalesDocumentSub"
             TempTrackingSpecification.InitTrackingSpecification(Database::"Item Ledger Entry", 0, '', '', 0, ItemLedgerEntry."Entry No.",
                 ItemLedgerEntry."Variant Code", ItemLedgerEntry."Location Code", ItemLedgerEntry."Qty. per Unit of Measure");
             TempTrackingSpecification.CopyTrackingFromItemLedgEntry(ItemLedgerEntry);
+
             CreateReservEntry.CreateReservEntryFrom(TempTrackingSpecification);
 
             CreateReservEntry.CreateEntry(SalesLine."No.", SalesLine."Variant Code", SalesLine."Location Code", SalesLine.Description, 0D,
