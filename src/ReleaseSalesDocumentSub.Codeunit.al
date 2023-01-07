@@ -72,7 +72,7 @@ codeunit 50400 "ReleaseSalesDocumentSub"
         QtyToAssign: Decimal;
         QtyToAssignBase: Decimal;
     begin
-        QtyToAssign := Math.Min(ItemLedgerEntry."Remaining Quantity", RemainQtyToAssign);
+        QtyToAssign := Math.Min(ItemLedgerEntry."Remaining Quantity" - ItemLedgerEntry."Reserved Quantity", RemainQtyToAssign);
         QtyToAssignBase := UnitofMeasureManagement.CalcBaseQty(QtyToAssign, SalesLine."Qty. per Unit of Measure");
 
         TempReservationEntry."Lot No." := ItemLedgerEntry."Lot No.";
